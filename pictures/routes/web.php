@@ -15,7 +15,7 @@
 
 $router->get('/', function () use ($router) {
     // return $router->app->version();
-   return 'Wellcome to Pictures API <br> /pictures - List all pictures';
+   return 'Wellcome to Pictures API <br> /pictures - List all pictures <br> /pictures/number - shows a specific number of images <br> /pictures/*number/*number - shows a specific number of images and page <br> /pictures/*number/*number/*text - shows a specific number of images, pages and search a text on description or title <br> *number, *image, *text, need to be change to a real number and text';
 });
 
 $router->get('/pictures[/{list}[/{page}[/{text}]]]', function ($list = 20, $page = 1 , $text = null) use ($router) {
@@ -26,7 +26,7 @@ $router->get('/pictures[/{list}[/{page}[/{text}]]]', function ($list = 20, $page
     $result = json_decode(file_get_contents(
     $url_allPictures), true);
 
-    $array = array();
+   
 
     if($result){
         // return $result;
@@ -38,22 +38,12 @@ $router->get('/pictures[/{list}[/{page}[/{text}]]]', function ($list = 20, $page
                 $result_picture = json_decode(file_get_contents(
                 $url), true);
 
-                $array['id'] = $row['photo'][$i]['id'];
-                $array['title'] = $row['photo'][$i]['title'];
-                $array['owner'] = $row['photo'][$i]['owner'];
-                $array['description'] = $row['photo'][$i]['description']['_content'];
-                $array['url'] = $result_picture['sizes']['size'][$i]['source'];
-                $array['height'] = $result_picture['sizes']['size'][$i]['height'];
-                $array['width'] = $result_picture['sizes']['size'][$i]['width'];
-
-                // print_r($row['photo'][$i]) ;
-                // print_r($result_picture['sizes']['size'][$i]);
-                
+                $array[] = array('id' => $row['photo'][$i]['id'], 'title' => $row['photo'][$i]['title'], 'owner' => $row['photo'][$i]['owner'], 'description'=> $row['photo'][$i]['description']['_content'],'url' => $result_picture['sizes']['size'][$i]['source'], 'height' => $result_picture['sizes']['size'][$i]['height'],'width' =>  $result_picture['sizes']['size'][$i]['width']);
             }
-            print_r($array);
-            return $array;
+           
+             return $array;
         }
-        
+       
     }
 });
 
