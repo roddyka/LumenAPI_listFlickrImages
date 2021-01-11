@@ -30,8 +30,9 @@ $router->get('/pictures[/{list}[/{page}[/{text}]]]', function ($list = 20, $page
 
     if($result){
         // return $result;
+        
         foreach($result as $row){
-
+            $arrayInfo[] = array('page' => $page, 'pictures' => count($row['photo']), 'text' => $text);
             for($i = 0; $i < count($row['photo']); $i++){
                 $url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=d556e7657e0c62bf5e26eadb44aaf0e6&photo_id=".$row['photo'][$i]['id']."&format=json&nojsoncallback=1";
                 
@@ -40,8 +41,10 @@ $router->get('/pictures[/{list}[/{page}[/{text}]]]', function ($list = 20, $page
 
                 $array[] = array('id' => $row['photo'][$i]['id'], 'title' => $row['photo'][$i]['title'], 'owner' => $row['photo'][$i]['owner'], 'description'=> $row['photo'][$i]['description']['_content'],'url' => $result_picture['sizes']['size'][$i]['source'], 'height' => $result_picture['sizes']['size'][$i]['height'],'width' =>  $result_picture['sizes']['size'][$i]['width']);
             }
+
+            array_push($array, $arrayInfo);
            
-             return $array;
+            return $array;
         }
        
     }
