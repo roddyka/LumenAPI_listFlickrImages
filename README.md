@@ -2,6 +2,9 @@
 A API using Lumen to list pictures.
 
 Wellcome to Pictures API <br> 
+
+To run, dont forget...go to public folder ;)
+
 /pictures - List all pictures 
 <br> 
 /pictures/number - shows a specific number of images 
